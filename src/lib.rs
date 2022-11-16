@@ -21,9 +21,9 @@ pub struct Options {
     pub token: String,
 }
 
-pub fn init(ctx: &worker::Context, options: impl Into<Option<Options>>) -> SentryToken {
+pub fn init(ctx: worker::Context, options: impl Into<Option<Options>>) -> SentryToken {
     if let Some(options) = options.into() {
-        let sentry = Sentry::new(ctx.clone(), options);
+        let sentry = Sentry::new(ctx, options);
         SENTRY.with(move |cell| cell.borrow_mut().replace(sentry));
         SentryToken(true)
     } else {

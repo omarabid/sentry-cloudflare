@@ -1,10 +1,13 @@
+use std::sync::Arc;
+
 use super::protocol;
-use crate::error::{net, Error, Result};
+use crate::error::{Error, Result};
+use crate::net;
 use git_version::git_version;
 
 #[derive(Clone)]
 pub struct Sentry {
-    ctx: worker::Context,
+    ctx: Arc<worker::Context>,
     project: String,
     token: String,
     breadcrumbs: Vec<protocol::Breadcrumb>,
@@ -19,7 +22,7 @@ pub struct Sentry {
 impl Sentry {
     pub fn new(ctx: worker::Context, options: super::Options) -> Self {
         Self {
-            ctx,
+            ctx: Arc::new(ctx),
             project: options.project,
             token: options.token,
             breadcrumbs: Vec::new(),
