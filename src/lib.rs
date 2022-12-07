@@ -2,17 +2,20 @@ use std::borrow::Cow;
 use std::{cell::RefCell, rc::Rc};
 
 mod client;
+mod consts;
 pub(crate) mod converter;
 mod crypto;
-mod error;
-mod layer;
+pub mod error;
+pub mod layer;
 mod net;
 mod protocol;
+mod request_context;
 mod utils;
 
 pub use self::client::Sentry;
 pub use self::layer::Layer;
 pub use self::protocol::{Breadcrumb, Level, Map, Request, SpanStatus as Status, User, Value};
+pub use self::request_context::RequestContext;
 
 thread_local!(pub(crate) static SENTRY: RefCell<Option<Sentry>> = RefCell::new(None));
 

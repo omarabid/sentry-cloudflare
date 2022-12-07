@@ -177,9 +177,12 @@ impl Sentry {
 
         let auth = format!(
             "Sentry sentry_version=7, sentry_client=pobb.in/1.0, sentry_key={}",
-            self.token
+            "d7604c9922ef4faf94c163a13d3acbe4"
         );
         let url = format!("https://sentry.io/api/{}/envelope/", self.project);
+
+        worker::console_log!("{}", url);
+        worker::console_log!("{}", auth);
 
         self.ctx.wait_until(async move {
             let response = net::Request::post(url)
