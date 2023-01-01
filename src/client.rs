@@ -3,7 +3,9 @@ use std::sync::Arc;
 use super::protocol;
 use crate::error::{Error, Result};
 use crate::net;
-use git_version::git_version;
+
+// This probably should be passed by the consumer
+const RELEASE_VERSION: &str = "0.1.1";
 
 #[derive(Clone)]
 pub struct Sentry {
@@ -107,7 +109,7 @@ impl Sentry {
         };
 
         transaction.timestamp = Some(protocol::Timestamp::now());
-        transaction.release = Some(git_version!().into());
+        transaction.release = Some(RELEASE_VERSION.into());
         transaction.request = self.request.clone();
         transaction.user = self.user.clone();
         transaction.breadcrumbs = self.breadcrumbs.clone();
@@ -132,7 +134,7 @@ impl Sentry {
             .and_then(|t| t.0.name.to_owned())
             .map(Into::into);
         event.breadcrumbs = self.breadcrumbs.clone();
-        event.release = Some(git_version!().into());
+        event.release = Some(RELEASE_VERSION.into());
         event.server_name = server_name;
         event.request = self.request.clone();
         event.user = self.user.clone();
